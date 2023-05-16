@@ -1,15 +1,12 @@
-Subscribers
+Subsriber
 - email
 - name
 - active
 
 EmailCampaign
-- subject 
-- campaign_email
+- subject
 - preview_text
 - article_url
 - html_content
-- plain_text_content
+- plain_text
 - published_date
-
-

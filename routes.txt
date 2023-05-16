@@ -1,16 +1,7 @@
-Subscribers
-POST - /subscriber 
-GET - /subscriber
-POST - /unsubscribe
-
+Subsriber
+POST - subscriber/
+POST - unsubscribe/
+GET - subscriber/
 
 EmailCampaign
-POST - /new_campaign
-GET - /campaigns
-GET - /campaigns/:id
-PUT - /campaigns/:id
-DELETE - /campaigns/:id
-POST - /publish_now/:id
-
-
-
+POST - emailcampaign/
