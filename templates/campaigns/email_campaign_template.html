@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
+    <meta charset="UTF-8" />
     <title>{{ campaign.subject }}</title>
-</head>
-<body>
+  </head>
+  <body>
+    <h2>Hi {{ subscriber.first_name }}!</h2>
     <h1>{{ campaign.subject }}</h1>
     <p>{{ campaign.preview_text }}</p>
-    <p>Read the article: <a href="{{ campaign.article_url }}">{{ campaign.article_url }}</a></p>
-    <hr>
-    {{ campaign.html_content }}
-</body>
+    <a href="{{ campaign.article_url }}">Read More</a>
+    <div>{{ campaign.html_content }}</div>
+  </body>
 </html>

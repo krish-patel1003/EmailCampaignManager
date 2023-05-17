@@ -15,8 +15,7 @@ class EmailCampaignView(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            render(request, "campaigns/email_campaign_template.html", {"campaign": serializer.data})
-            send_email(data=serializer.data)
+            send_email(campaign=serializer.data)
             return Response(
                 {"data": serializer.data, "message": "Campaign Created Successfully"}, status=status.HTTP_201_CREATED)
         return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
