@@ -6,7 +6,7 @@ import redis
 
 @receiver(post_save, sender=EmailCampaign, dispatch_uid="email_campaign_created")
 def send_email_campaigns(sender, instance, **kwargs):
-    red = redis.Redis(host='localhost', port=49153, decode_responses=True, password="redispw")
+    red = redis.StrictRedis(host='localhost', port=49153, decode_responses=True, password="redispw")
     sub = red.pubsub()
     sub.subscribe('email_campaign')
     print("subscribed to email_campaign channel, listening for messages")

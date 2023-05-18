@@ -7,14 +7,16 @@ import redis
 
 class EmailCampaignView(APIView):
 
-    red = redis.Redis(host='localhost', port=49153, decode_responses=True, password="redispw")
+    red = redis.StrictRedis(host='localhost', port=49153, decode_responses=True, password="redispw")
 
     def post(self, request, *args, **kwargs):
         serializer = EmailCampaignSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
+            print(f"serializer save method called, {serializer.data.get('id')}")
             campaign_id = serializer.data.get('id')
+            print(f"campaign created, {campaign_id}")
             self.red.publish('email_campaign', campaign_id)
             print(f"message published on email_campaign channel, message={campaign_id}")
             return Response(
