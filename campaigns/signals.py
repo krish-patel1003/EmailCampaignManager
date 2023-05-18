@@ -15,8 +15,6 @@ def send_email_campaigns(sender, instance, **kwargs):
     sub = red.pubsub()
     sub.subscribe('email_campaign')
     print("subscribed to email_campaign channel, listening for messages")
-    for i in sub.listen():
-        print(i)
     for message in sub.listen():
         campaign_id = message.get('data')
         print(f"message received on email_campaign channel, message={campaign_id}")
