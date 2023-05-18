@@ -2,17 +2,21 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from campaigns.serializers import EmailCampaignSerializer
-from campaigns.email_dispatcher import send_emails
+import redis
 # Create your views here.
 
 class EmailCampaignView(APIView):
+
+    red = redis.Redis(host='localhost', port=49153, decode_responses=True, password="redispw")
 
     def post(self, request, *args, **kwargs):
         serializer = EmailCampaignSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
-            send_emails(campaign=serializer.data)
+            campaign_id = serializer.data.get('id')
+            self.red.publish('email_campaign', campaign_id)
+            print(f"message published on email_campaign channel, message={campaign_id}")
             return Response(
                 {"data": serializer.data, "message": "Campaign Created Successfully"}, status=status.HTTP_201_CREATED)
         return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
