@@ -19,7 +19,6 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         with open("subscribers/management/commands/mock_subscribers.json", "r") as f:
             data = json.load(f)
-            subscriber = {}
             print(data)
             for sub in data:
                 self.create_subscribers(sub["email"], sub["first_name"])
