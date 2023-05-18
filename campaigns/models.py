@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class EmailCampaign(models.Model):
-    subject = models.CharField(max_length=100)
+    subject = models.CharField(max_length=100, unique=True)
     preview_text = models.TextField()
     article_url = models.URLField()
     html_content = models.TextField()

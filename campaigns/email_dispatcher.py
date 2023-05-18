@@ -3,7 +3,7 @@ import threading
 from campaigns.utils import render_email_template, send_email
 
 
-def process_email(campaign, subscriber):
+def process_email(event, campaign, subscriber):
 
     email_content = render_email_template(campaign, subscriber)
     
@@ -13,6 +13,7 @@ def process_email(campaign, subscriber):
             print(f"trying to send email, {campaign.subject} to {subscriber.email}")
             send_email(campaign, subscriber, email_content)
             print(f"email sent, {campaign.subject} to {subscriber.email}")
+            event.set() # Signal that the thread is completed
             return  # Email sent successfully, exit the loop
         except Exception as e:
             print(f"Failed to send email: {str(e)}")
@@ -25,13 +26,14 @@ def send_emails(campaign):
 
     subscribers = Subscriber.objects.filter(active=True)
     threads = []
+    event = threading.Event()
 
     # Create threads for processing emails
     for subscriber in subscribers:
         print(f"processing email thread, {campaign.subject} to {subscriber.email}")
         thread = threading.Thread(
             target=process_email, 
-            args=(campaign, subscriber)
+            args=(event, campaign, subscriber)
         )
         thread.start()
         threads.append(thread)
@@ -40,3 +42,5 @@ def send_emails(campaign):
     # Wait for all the threads to complete
     for thread in threads:
         thread.join()
+
+    event.wait() # Wait until all the threads are completed
