@@ -2,6 +2,13 @@ from subscribers.models import Subscriber
 import threading
 from campaigns.utils import render_email_template, send_email
 
+def sync_email_send(campaign):
+    subscribers = Subscriber.objects.filter(active=True)
+    for subscriber in subscribers:
+        email_content = render_email_template(campaign, subscriber)
+        send_email(campaign, subscriber, email_content)
+
+
 
 def process_email(campaign, subscriber):
 
